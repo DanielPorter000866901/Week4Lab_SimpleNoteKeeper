@@ -5,8 +5,12 @@
  */
 package servlets;
 
+import models.Note;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.File;
+import java.util.Scanner;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,11 +26,20 @@ public class NoteServlet extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException, FileNotFoundException {
         
         String e = request.getParameter("edit");
         
+        
+        Scanner readNotes = new Scanner(new File("/WEB-INF/note.txt"));
+        
+        Note note = new Note();
+        note.setTitle(readNotes.nextLine());
+        note.setContents(readNotes.nextLine());
+        
+        request.setAttribute("note", note);
+//        
         if (e == null) {
             getServletContext().getRequestDispatcher("/WEB-INF/viewnote.jsp").forward(request, response);
         } else {
