@@ -30,16 +30,16 @@ public class NoteServlet extends HttpServlet {
             throws ServletException, IOException, FileNotFoundException {
         
         String e = request.getParameter("edit");
+        String path = getServletContext().getRealPath("/WEB-INF/note.txt");
         
-        
-        Scanner readNotes = new Scanner(new File("/WEB-INF/note.txt"));
+        Scanner readNotes = new Scanner(new File(path));
         
         Note note = new Note();
         note.setTitle(readNotes.nextLine());
         note.setContents(readNotes.nextLine());
         
         request.setAttribute("note", note);
-//        
+        
         if (e == null) {
             getServletContext().getRequestDispatcher("/WEB-INF/viewnote.jsp").forward(request, response);
         } else {
