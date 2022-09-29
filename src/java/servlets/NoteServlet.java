@@ -52,8 +52,8 @@ public class NoteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String title = (String)request.getAttribute("title");
-        String contents = (String)request.getAttribute("contents");
+        String title = (String)request.getParameter("title");
+        String contents = (String)request.getParameter("contents");
         
         Note note = new Note();
         note.setTitle(title);
@@ -65,6 +65,8 @@ public class NoteServlet extends HttpServlet {
         writeNotes.write(title + "\n" + contents + "\n");
         
         writeNotes.close();
+        
+        request.setAttribute("note", note);
         
         getServletContext().getRequestDispatcher("/WEB-INF/viewnote.jsp").forward(request, response);
         
