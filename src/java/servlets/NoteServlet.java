@@ -8,7 +8,7 @@ package servlets;
 import models.Note;
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.FileWriter;
 import java.io.File;
 import java.util.Scanner;
 import javax.servlet.ServletException;
@@ -51,6 +51,22 @@ public class NoteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        String title = (String)request.getAttribute("title");
+        String contents = (String)request.getAttribute("contents");
+        
+        Note note = new Note();
+        note.setTitle(title);
+        note.setContents(contents);
+        
+        String path = getServletContext().getRealPath("/WEB-INF/note.txt");
+        FileWriter writeNotes = new FileWriter(path);
+        
+        writeNotes.write(title + "\n" + contents + "\n");
+        
+        writeNotes.close();
+        
+        getServletContext().getRequestDispatcher("/WEB-INF/viewnote.jsp").forward(request, response);
         
     }
 
